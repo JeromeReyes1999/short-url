@@ -1,0 +1,14 @@
+development:
+  database: short_url
+  username: root
+  password: qwer4321
+  adapter: mysql2
+  encoding: utf8mb4
+  host: db
+test:
+  database: short_url_test
+  username: root
+  password: qwer4321
+  adapter: mysql2
+  encoding: utf8mb4
+  host: db
