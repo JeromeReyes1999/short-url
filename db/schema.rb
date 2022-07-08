@@ -16,7 +16,7 @@ ActiveRecord::Schema.define(version: 2022_07_06_065426) do
     t.string "description"
     t.text "long_url"
     t.string "short_url"
-    t.integer "count"
+    t.integer "count", default: 0
     t.bigint "user_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
