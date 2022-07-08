@@ -1,0 +1,10 @@
+<h1>Show Url</h1>
+<ul>
+  <li>Desciption: <%= @url.description %></li>
+  <li>URL id: <%= @url.id %></li>
+  <li>Click count: <%= @url.count %></li>
+  <li>Creator: "<%= @url.user.email %></li>
+  <li>Shorten URL: <%= link_to "#{@domain}/#{@url.short_url}", "#{@domain}/#{@url.short_url}", target: :_blank %></li>
+  <li>Original URL: <%= @url.long_url %></li>
+</ul>
+<%= link_to 'Back', urls_path %>
