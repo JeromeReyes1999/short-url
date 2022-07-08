@@ -9,6 +9,12 @@ class UrlsController < ApplicationController
     @domain = request.base_url
   end
 
+  def redirect
+    @short_ext = params[:short_url]
+    @url=Url.find_by(short_url: @short_ext)
+    redirect_to @url.long_url
+  end
+
   def new
     @url = Url.new
   end
