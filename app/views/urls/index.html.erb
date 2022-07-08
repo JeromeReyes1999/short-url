@@ -2,14 +2,16 @@
 <% @urls.each do |url| %>
   <ul>
     <li>id:<%= url.id %></li>
-    <li>Creator:<%= url.user.email %></li>
-    <li>Shorten URL:<%= link_to "#{@domain}/#{url.short_url}", url.short_url %></li>
-    <li>Original URL:<%= url.long_url %></li>
-    <li>
+    <li>Creator: <%= url.user.email %></li>
+    <li>Click count: <%= url.count %></li>
+    <li>Shorten URL: <%= link_to "#{@domain}/#{url.short_url}", "#{@domain}/#{url.short_url}", target: :_blank %></li>
+    <li>Original URL: <%= url.long_url %></li>
+    <li><%= link_to "show this Url", url_path(url) %></li>
       <%= form_for url, url: url_path(url), method: :delete do |f| %>
-        <%= f.submit 'delete' %>
+        <%= f.submit 'delete'%>
       <% end %>
-    </li>
   </ul>
 <% end %>
+
 <%= link_to 'New', new_url_path %>
+<%= link_to "Logout", destroy_user_session_path, :method => :delete %>
