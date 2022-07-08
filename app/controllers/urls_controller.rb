@@ -1,8 +1,6 @@
 class UrlsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_url, only: :show
   before_action :set_own_url, only: :destroy
-
 
   def index
     @urls = Url.all.includes(:user)
@@ -11,8 +9,13 @@ class UrlsController < ApplicationController
 
   def redirect
     @short_ext = params[:short_url]
-    @url=Url.find_by(short_url: @short_ext)
-    redirect_to @url.long_url
+    @url = Url.find_by(short_url: @short_ext)
+    if @url.nil? #if 404
+      content_not_found
+    else
+      @url.increment!(:count)
+      redirect_to @url.long_url
+    end
   end
 
   def new
@@ -35,8 +38,21 @@ class UrlsController < ApplicationController
     end
   end
 
+  def show
+    if (@url = Url.find_by_id(params[:id])).present?
+      @domain = request.base_url
+      @url = Url.find(params[:id])
+    else
+      content_not_found
+    end
+  end
+
   def url_params
     params.require(:url).permit(:description, :long_url)
+  end
+
+  def redirect_click
+
   end
 
   def set_own_url
@@ -47,9 +63,8 @@ class UrlsController < ApplicationController
     end
   end
 
-  def set_url
-    @url = Url.find(params[:id])
+  def content_not_found
+    render :file => "#{Rails.root}/public/404.html",  layout: false, status: :not_found
   end
-
 
 end
