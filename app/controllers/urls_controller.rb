@@ -39,7 +39,7 @@ class UrlsController < ApplicationController
   end
 
   def show
-    if (@url = Url.find_by_id(params[:id])).present?
+    if (@url = Url.find_by(id: params[:id])).present?
       @domain = request.base_url
       @url = Url.find(params[:id])
     else
@@ -56,7 +56,7 @@ class UrlsController < ApplicationController
   end
 
   def set_own_url
-    @url= current_user.urls.find_by_id(params[:id])
+    @url= current_user.urls.find_by(id: params[:id])
     if @url.nil?
       flash[:alert] = 'this url is either does not belong to you or does not exist'
       redirect_to urls_path
