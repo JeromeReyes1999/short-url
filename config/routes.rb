@@ -5,7 +5,7 @@ Rails.application.routes.draw do
   root :to => "urls#index"
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 
-  resources :urls , only: [:index, :new, :create, :destroy, :show]
+  resources :urls
 
   get "*path" => "urls#content_not_found" #404
 end
