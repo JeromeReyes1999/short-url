@@ -1,9 +1,10 @@
 class UrlsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_own_url, only: :destroy
+  before_action :set_own_url, only: [:edit, :update, :destroy]
 
   def index
-    @urls = Url.all.includes(:user)
+    @urls = Url.includes(:user).page(params[:page]).per(5)
+    @page = params[:page] #current page
     @domain = request.base_url
   end
 
@@ -38,6 +39,18 @@ class UrlsController < ApplicationController
     end
   end
 
+  def edit; end
+
+  def update
+    #the comment below is my other solution
+    #@size = (Url.where("id <= ?", params[:id]).size / 5) + 1
+    if @url.update(url_params)
+      redirect_to urls_path({:page => @page})
+    else
+      render :edit
+    end
+  end
+
   def show
     if (@url = Url.find_by(id: params[:id])).present?
       @domain = request.base_url
@@ -51,20 +64,13 @@ class UrlsController < ApplicationController
     params.require(:url).permit(:description, :long_url)
   end
 
-  def redirect_click
-
-  end
 
   def set_own_url
+    @page= params[:page]
     @url= current_user.urls.find_by(id: params[:id])
     if @url.nil?
       flash[:alert] = 'this url is either does not belong to you or does not exist'
       redirect_to urls_path
     end
   end
-
-  def content_not_found
-    render :file => "#{Rails.root}/public/404.html",  layout: false, status: :not_found
-  end
-
 end
