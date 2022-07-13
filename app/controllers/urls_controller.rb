@@ -42,8 +42,8 @@ class UrlsController < ApplicationController
   def edit; end
 
   def update
-    #the comment below is my other solution
-    #@size = (Url.where("id <= ?", params[:id]).size / 5) + 1
+    #the comment below is my other solution, 5 is the row per page. comment it out to use the other solution
+    @page = (Url.where("id < ?", params[:id]).size / 5) + 1
     if @url.update(url_params)
       redirect_to urls_path({:page => @page})
     else
